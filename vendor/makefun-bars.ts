@@ -145,6 +145,12 @@ export class BarsState {
     return this.warmupBars > 0 && this.seq < this.warmupBars;
   }
 
+  /** The symbol's latest close, or null before its first bar (a buy then is rejected no_bar). */
+      close(symbol: string): bigint | null {
+          const b = this.latest.get(symbol);
+          return b === undefined ? null : BigInt(b.c);
+    }
+  
   /** What `qty` of the symbol is worth at `price` (default its latest close), truncated, in quote units. */
   value(symbol: string, qty: bigint, price: bigint | null = this.close(symbol)): bigint {
     const s = this.symbols.get(symbol);
